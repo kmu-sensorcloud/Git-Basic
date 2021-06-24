@@ -5,7 +5,7 @@ Github 유용한 명령어 정리
 # Github
 
 **Table of Contents**
-* [1. PUSH](#1-push)
+* [1. Push](#1-push)
   * [1.1 When you push to your own repo](#11-when-you-push-to-your-own-repo)
   * [1.2 When you push to other's repo(especially branch)](#12-when-you-push-to-others-repoespecially-branch)
   * [1.3 When `git push` fails](#11-when-git-push-fails)
@@ -25,8 +25,12 @@ Github 유용한 명령어 정리
 * [7. Remove](#7-remove)
   * [7.1 Remove directory/file](#71-remove-directoryfile)
 * [8. Jekyll - Setting Bundle](#8-jekyll---setting-bundle)
+* [9. Stash](#9-stash)
+  * [9.1 Save your work temporarily](#91-save-your-work-temporarily)
+  * [9.2 Check Stash List](#92-check-stash-list)
+  * [9.3 Get stash back](#93-get-stash-back)
 
-## 1. PUSH
+## 1. Push
 
 ### 1.1 When you push to your own repo             
 ```console
@@ -200,3 +204,67 @@ $ rm -rdf DIRECTORY_NAME
     ```
     Then, run above code to run jekyll server.
 
+
+## 9. Stash
+
+**What is that?**
+> It basically stores uncommitted changes to the stack and then erases all the changes so you can do other things and then re-apply the changes you made before by restoring them from the stack using git stash apply command. (special thanks to [@c0510gy](https://github.com/c0510gy))
+
+Basically, when you're working on **develop** branch, and then want to checkout to **main** branch, you first need to commit changes on **develop** branch. Then you can checkout to **main** branch. This really sucks when you don't want to commit. So in this case, use `git stash`.
+
+**Example**
+```console
+$ git stash
+Saved working directory and index state WIP on develop: bd2872e Added Restaurant Info data - types, menus, names
+```
+### 9.1 Save your work temporarily
+
+Files that I worked look like:
+```console
+$ git status
+On branch develop
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   Pipfile
+        modified:   Pipfile.lock
+        modified:   README.md
+```
+
+Then if I run `git stash` I get this result.
+```console
+$ git stash
+Saved working directory and index state WIP on develop: bd2872e Added Restaurant Info data - types, menus, names
+```
+And the message "Added Restaurant Info data - types, menus, names" is the latest committed message I had committed before.
+
+### 9.2 Check Stash List
+```console
+$ git stash list
+```
+This can show you the list of stash with it's ID in your directory
+
+**Example**
+```console
+$ git stash list
+stash@{0}: WIP on develop: bd2872e Added Restaurant Info data - types, menus, names
+(END)
+```
+
+### 9.3 Get stash back
+```console
+$ git stash apply stash@{STASH_ID}
+```
+
+**Example**
+```console
+$ git stash apply stash@{0}
+Removing search/__init__.py
+On branch develop
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   Pipfile
+        modified:   Pipfile.lock
+        modified:   README.md
+```
